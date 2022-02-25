@@ -6,8 +6,42 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class WebScanner {
+    
+    public class mm{
+        // gets data from www.moneymetals.com            
+        public static double getGoldValue(){
+            return getValue("https://www.moneymetals.com/gold-price");
+        }
+        
+        public static double getSilverValue(){
+            return getValue("https://www.moneymetals.com/silver-price");
+        }
+        
+        public static double getPlatinumValue(){
+            return getValue("https://www.moneymetals.com/platinum-price");
+        }
+        
+        public static double getCopperValue(){
+            return getValue("https://www.moneymetals.com/copper-prices");
+        }
+                
+        private static double getValue(String url){
+            try{
+                Document doc = Jsoup.connect(url).get();  
+                Elements header = doc.select("[class=col-sm-7 col-sm-push-5 live-price-panel]");
+                Elements body = header.select("tr");
+                Element data = body.select("td").get(1);
+                return Double.parseDouble(data.text().replace("$", "").replace(",",""));
+            } catch (Exception e ) { 
+                e.printStackTrace();
+                return -1;
+            }
+        }
+    }
+    
+    
     public class lcw{       
-        // 
+        // gets data from www.livecoinwatch.com      
         public static double getValue(String url){
             try{
                 Document doc = Jsoup.connect(url).get();  
