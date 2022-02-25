@@ -34,10 +34,19 @@ public class WebDataTool {
     
     public class Coin extends Asset{
         
+        private String lcw_name;
+        private String lcw_abr;
         private String lcw_link;
         
         public Coin(){
             
+        }
+        
+        public void setLcw(String name,String abr){
+            lcw_name = name;
+            lcw_abr = abr;
+            setLcwLink("https://www.livecoinwatch.com/price/"+name+"-"+abr);
+            update();
         }
         
         public void setLcwLink(String link)     { this.lcw_link = link; }
@@ -45,8 +54,9 @@ public class WebDataTool {
         public String getLcwLink()              { return lcw_link; }
         
         public void update(){
-            super.setValue(WebScanner.lcw.getValue(lcw_link));
-            super.setName(WebScanner.lcw.getName(lcw_link));
+            String[] temp = WebScanner.lcw.getData(lcw_link);
+            super.name  = temp[0];
+            super.price = Double.parseDouble(temp[2]);
         }
         
         public String getData(){
